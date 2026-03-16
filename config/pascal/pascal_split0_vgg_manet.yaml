@@ -1,0 +1,72 @@
+Data:
+  data_root: ./data/VOCdevkit2012/VOC2012
+  base_data_root: ./data/base_annotation/pascal/
+  annotation_root: ./data/VOCdevkit2012/VOC2012/Annotations/
+  train_list: ./lists/pascal/voc_sbd_merge_noduplicate.txt
+  val_list: ./lists/pascal/val.txt
+  classes: 2
+
+CLIP:
+  clip_path: ./initmodel/clip/ViT-B-16.pt
+
+Train:
+  # Aug
+  train_h: 473    # 图像的高
+  train_w: 473    # 图像的宽
+  val_size: 473   # 验证集需要调整的图像大小
+  scale_min: 0.9    # 最小随机放缩比例
+  scale_max: 1.1    # 最大随机放缩比例
+  rotate_min: -10   # 最小随机旋转角度
+  rotate_max: 10    # 最大随机旋转角度
+  ignore_label: 255    # 需要忽略的标签索引，指定的标签不会参与损失计算
+  padding_label: 255    # 当放缩或旋转导致页面空缺时的填充值
+  # Dataset & Mode
+  split: 0    # 指定数据集的划分方式
+  shot: 1   # 支持样本数量
+  data_set: 'pascal'    # 数据集
+  use_split_coco: False   # 是否使用coco数据集的划分方式
+  # Optimizer
+  batch_size: 1     # 每批数据大小
+  base_lr: 0.0001     # 初始学习率
+  pre_weight: ./initmodel/PSPNet/pascal/split0/vgg/best.pth   # 预训练权重
+  epochs: 200   # 训练的轮数
+  start_epoch: 0    # 开始的轮数epoch
+  stop_interval: 80     # 在到达该周期时最好结果没有更新时停止
+  index_split: 0    # index for determining the params group with 10x learning rate
+  power: 0.9    # 控制学习率衰减的速度(0表示无衰减)
+  momentum: 0.9   # 动量
+  weight_decay: 0.01    # 权重衰减
+  warmup: False     # 表示 warmup 阶段的配置
+  # Viz & Save & Resume
+  print_freq: 10    # 输出日志的频率（每几个）
+  save_freq: 10     # 保存参数的频率（每几个）
+  resume:
+  # Validate
+  evaluate: True    # 是否需要执行验证
+  SubEpoch_val: True    # 在每个epoch的一半时进行验证
+  fix_random_seed_val: True   # 是否需要固定随机种子
+  batch_size_val: 1   # 验证时的批大小
+  resized_val: True     # 是否需要调整验证集图像的尺寸
+  ori_resize: True    # 是否使用原始标签进行评估
+  # Else
+  workers: 8
+  fix_bn: True    # 是否固定bn
+  manual_seed: 321    # 随机种子
+  seed_deterministic: False   # 是否启用完全确定性训练模式
+  #add
+  zoom_factor: 8    # 最终预测的缩放因子，必须在[1, 2, 4, 8]中
+
+Method:
+  layers: 50
+  vgg: True
+  aux_weight1: 1.0    # 辅助权重
+  aux_weight2: 1.0
+  low_fea: 'layer2'     # 计算Gram矩阵的底层特征位置
+  kshot_trans_dim: 2    # K-shot中间维度
+  merge: 'final'     # GFSS融合位置 ('base' Eq(S1) | 'final' Eq(18) )
+  merge_tau: 0.9     # 融合阈值tau
+
+Test_Finetune:
+  weight:  # Path to the test model
+  ann_type: 'mask' # mask/bbox
+
