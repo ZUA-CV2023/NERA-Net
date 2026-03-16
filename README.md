@@ -38,7 +38,7 @@ Before running the code, you should generate the annotations for base classes by
 
 We retrained part of the backbone network to adapt it to our proposed Nested Pyramid Refinement Module(NPRM), placing them in the <code>'../initmodel'</code> directory.
 
-Download CLIP pre-trained ViT-B/16 at here and put it to <code>‘../initmodel/clip’</code>
+Download CLIP pre-trained ViT-B/16 at [here](https://openaipublic.azureedge.net/clip/models/5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f/ViT-B-16.pt) and put it to <code>‘../initmodel/clip’</code>
 
 # Experiments
 
